@@ -1,4 +1,6 @@
 import sortByDisplayOrder from "./src/utils/sort-by-display-order.js";
+import dateFilter from "./src/filters/date-filter.js";
+import w3DateFilter from "./src/filters/w3-date-filter.js";
 
 export default async function (config) {
   config.addPassthroughCopy("src/images");
@@ -12,6 +14,13 @@ export default async function (config) {
         .filter((x) => x.data.featured),
     ),
   );
+  config.addCollection("blog", (collection) =>
+    [...collection.getFilteredByGlob("./src/posts/*.md")].reverse(),
+  );
+
+  config.addFilter("dateFilter", dateFilter);
+  config.addFilter("w3DateFilter", w3DateFilter);
+
   return {
     markdownTemplateEngine: "njk",
     dataTemplateEngine: "njk",
